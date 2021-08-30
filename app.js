@@ -14,24 +14,28 @@ const app = express();
 
 app.set('view engine', 'ejs');
 
-mongoose.connect("mongodb://localhost:27017/blogDB", {useNewUrlParser: true});
+mongoose.connect("mongodb://localhost:27017/blogDB", {
+  useNewUrlParser: true
+});
 mongoose.set('useFindAndModify', false);
 
-const postSchema = new mongoose.Schema ({
+const postSchema = new mongoose.Schema({
   title: String,
   content: String
 });
 
 const Post = mongoose.model("Post", postSchema);
 
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 app.use(express.static("public"));
 
 // let posts = [];
 
-app.get("/", function(req, res){
+app.get("/", function(req, res) {
 
-  Post.find({}, function(err, foundPosts){
+  Post.find({}, function(err, foundPosts) {
     res.render("home", {
       startingContent: homeStartingContent,
       posts: foundPosts
@@ -40,19 +44,23 @@ app.get("/", function(req, res){
 
 });
 
-app.get("/about", function(req, res){
-  res.render("about", {aboutContent: aboutContent});
+app.get("/about", function(req, res) {
+  res.render("about", {
+    aboutContent: aboutContent
+  });
 });
 
-app.get("/contact", function(req, res){
-  res.render("contact", {contactContent: contactContent});
+app.get("/contact", function(req, res) {
+  res.render("contact", {
+    contactContent: contactContent
+  });
 });
 
-app.get("/compose", function(req, res){
+app.get("/compose", function(req, res) {
   res.render("compose");
 });
 
-app.post("/compose", function(req, res){
+app.post("/compose", function(req, res) {
   // const post = {
   //   title: req.body.postTitle,
   //   content: req.body.postBody
@@ -69,10 +77,12 @@ app.post("/compose", function(req, res){
 
 });
 
-app.get("/posts/:postId", function(req, res){
+app.get("/posts/:postId", function(req, res) {
   const requestedId = (req.params.postId);
 
-  Post.findById({_id: requestedId}, function(err, post){
+  Post.findById({
+    _id: requestedId
+  }, function(err, post) {
     res.render("post", {
       title: post.title,
       content: post.content
